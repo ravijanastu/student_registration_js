@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html>
+<head>
+
+<title> first jquery</title>
+
+<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+<script src="js/jquery.validate.js"></script>
+<script src="student.js"></script>
+
+<head>
+<body bgcolor="grey">
+<form class="myform"  id="form1" method="get" action="result.html" autocomplete="off" >
+<fieldset>
+<center>
+<h1> BASIC STUDENT REGISTRATION</h1>
+<p>
+<label for="cname"> Name<span>(required, at least 2 character)</span></label>
+<input id="cname" name="name" minlength="3" type="text" required/>
+</p>
+<p>
+
+<label for="cusn"> USN<span>(required,  Enter 10 digit usn)</span></label>
+<input id="cusn" name="usn" maxlength="10" type="text" required/>
+</p>
+<p>
+<label for="cbranch"> Branch<span>(required,  3 character)</span></label>
+<input id="cbranch" name="branch" maxlength="3" type="text" required/>
+</p>
+<p>
+<label for="cemail"> Email<span>(required, Example@example.com)</span></label>
+<input id="cemail" name="email" type="email" required/>
+</p>
+
+<p>
+<input class="submit" type="submit" value="save"/>
+</p>
+
+</center>
+</fieldset>
+
+
+<script>
+$("#form1").validate();
+
+});
+
+</script>
+</body>
+</html>
+
