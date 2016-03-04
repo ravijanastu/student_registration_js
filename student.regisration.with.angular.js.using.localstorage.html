@@ -1,0 +1,291 @@
+
+    <!DOCTYPE html>  
+      
+    <html xmlns="http://www.w3.org/1999/xhtml">  
+    <head runat="server">  
+        <title></title>  
+        <!--[if lte IE 8]>  
+             document.write("NOT HTML5 Compatible!!");  
+        <![endif]-->  
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular-messages.min.js"></script>
+        <script type="text/javascript" src="Scripts/Angular.min.js"></script>  
+        <script type="text/javascript">  
+            var isHtml5Compatible = document.createElement('canvas').getContext != undefined;  
+      
+            if (isHtml5Compatible) {  
+                initiateLocalStorage();  
+      
+            }  
+      
+            function initiateLocalStorage() {  
+                // Create the AngularJS app   
+                var app = angular.module('Students', ['storageService']);  
+      
+                // Create the Controller  
+                app.controller('StudentsController', ['$scope', 'getLocalStorage', function ($scope, getLocalStorage) {  
+                    $scope.appTitle = "LocalStorage Demo";  
+                    $scope.appHeadline = "AngularJS and HTML5";  
+      
+                    //Read the Students List from LocalStorage  
+                 
+      
+      
+      			$scope.Students =getLocalStorage.getStudents();
+      
+      
+      
+      
+      
+      
+                    //Count the Students List  
+                  
+                  $scope.count = $scope.Students.length;
+                  
+                  
+                  
+                  
+                  //add
+                  
+                    $scope.addStudent = function () {
+                  $scope.Students.push({'sn': $scope.sn,'sname': $scope.sname,'susn': $scope.susn,'sdate': $scope.sdate,'semail': $scope.semail,'sno': $scope.sno,'scollege': $scope.scollege });
+                  getLocalStorage.updateStudents($scope.Students);
+                  $scope.sn = '';
+                  $scope.sname = '';
+                  $scope.susn = '';
+                  $scope.sdate = '';
+                  $scope.semail = '';
+                  $scope.sno = '';
+                  $scope.scollege = '';
+                  $scope.count = $scope.Students.length;
+                  };
+                    
+                    
+                     $scope.editStudent = function (stu) {
+                     
+		
+				$scope.sn: $scope("sn").val();
+				 getLocalStorage.updateStudents($scope.Students);
+				
+	
+		alert("The data was edited.")
+		
+		return true;
+	}
+  
+      $scope.deleteStudent = function (stu) {
+      $scope.Students.splice($scope.Students.indexOf(stu), 1);
+      getLocalStorage.updateStudents($scope.Students);
+      $scope.count = $scope.Students.length;
+      alert("delete");
+      };
+      }]);
+      
+      
+      
+      
+                  var storageService =angular.module('storageService', []);
+            storageService.factory('getLocalStorage', function () {
+            var StudentList = {};
+            return {
+            list: StudentList,
+            updateStudents: function (StudentsArr) {
+            if (window.localStorage && StudentsArr) {
+            localStorage.setItem("Students", angular.toJson(StudentsArr));
+            }
+            StudentList = StudentsArr;
+            },
+            getStudents: function () {
+            StudentList = angular.fromJson(localStorage.getItem("Students"));
+            return StudentList ? StudentList : [];
+            }
+            };
+            });
+            }
+            
+            
+        </script>  
+      
+    </head>  
+    <body ng-app="Students">  
+      
+        <div ng-controller="StudentsController">  
+      
+        
+      
+            <form name="frm">  
+                
+                
+                <fieldset>
+
+<center><table>  
+                    <tr>  
+                     <tr>  
+                        <td>STUDNET NUMBER  :  
+      
+                        </td>  
+                        <td>  
+                            <input type="text" name="sn" ng-model="sn" placeholder="Enter the Number" required><br />  
+                        </td>
+                        <td>    <div ng-messages="frm.sn.$error">
+
+      <div ng-message="required"><font color="red">*</font></div>
+      
+    </div> </td>  
+                    </tr>  
+                    
+                     <tr>  
+                        <td>NAME   :  
+      
+                        </td>  
+                        <td>  
+                            <input type="text" name="sname" ng-model="sname" minlength="2" placeholder="Enter the Name" pattern="[a-z]{3,10}" required><br />  
+                        </td> 
+                        <td>    <div ng-messages="frm.sname.$error">
+
+      					<div ng-message="required"><font color="red">*(minimum two character)</font></div>
+      
+    					</div> </td> 
+                    </tr>  
+                     <tr>  
+                        <td>USN  :  
+      
+                        </td>  
+                        <td>  
+                            <input type="text" name="susn" ng-model="susn"  maxlength ="10" placeholder="Enter the USN" pattern="1rz1[0-9]mca[0-9]{2}" required><br />  
+                        </td>  
+                        <td>    <div ng-messages="frm.susn.$error">
+
+      <div ng-message="required"><font color="red">*(1rz13mca25)</font></div>
+      
+    </div> </td>
+                    </tr> 
+                     
+                     <tr>  
+                        <td>DATE  :  
+      
+                        </td>  
+                        <td>  
+                            <input type="date" name="sdate" ng-model="sdate" placeholder="Enter the Date" required><br />  
+                        </td>  
+                        <td>    <div ng-messages="frm.sdate.$error">
+
+      <div ng-message="required"><font color="red">*</font></div>
+      
+    </div> </td>
+                    </tr>  
+                     <tr>  
+                        <td>EMAIL-ID  :  
+      
+                        </td>  
+                        <td>  
+                            <input type="email" name="semail" ng-model="semail" placeholder="Enter the Emeil-id" required><br />  
+                        </td> 
+                        <td>    <div ng-messages="frm.semail.$error">
+
+      <div ng-message="required"><font color="red">*(example@example.com)</font></div>
+      
+    </div> </td> 
+                    </tr>  
+                     <tr>  
+                        <td>CONTACT :  
+      
+                        </td>  
+                        <td>  
+                            <input type="text" name="sno" ng-model="sno" pattern="+91-[7-9][0-9]{8}" placeholder="Enter the Contact Number" required><br />  
+                        </td> 
+                        <td>    <div ng-messages="frm.sno.$error">
+
+      <div ng-message="required"><font color="red">*(+91-7-900000000)</font></div>
+      
+    </div> </td> 
+                    </tr>  
+                     <tr>  
+                        <td>COLLEGE  :  
+      
+                        </td>  
+                        <td>  
+                            <input type="text" name="scollege" ng-model="scollege" pattern="[a-z]{3,10}" placeholder="Enter the Colege" required><br />  
+                        </td> 
+                        <td>    <div ng-messages="frm.scollege.$error">
+
+      <div ng-message="required"><font color="red">*(range 3-10 character)</font></div>
+      
+    </div> </td> 
+                    </tr>   
+                    <tr>  
+                        <td colspan="2" align="right">  
+      
+                     <center>       <button ng-click="addStudent()" ng-disabled="frm.$invalid">ADD</button>  </center>
+                        </td>  
+      
+                    </tr>  
+                </table> </center> 
+                </fieldset>
+            </form>  
+            <fieldset><center>
+            <table cellpadding="4" cellspacing="4" border="1" style="border-collapse: collapse; border: solid 1px #000">  
+                <tr>  
+                
+                    <td><b><font size="3" color="blue">STUDENT NUMBER</font></b></td> 
+                     <td><b><font size="3" color="blue">NAME</font></b></td>
+                      <td><b><font size="3" color="blue">USN</font></b></td>
+                       <td><b><font size="3" color="blue">DATE</font></b></td> 
+                    <td><b><font size="3" color="blue">EMAIL</font></b></td>  
+                    <td><b><font size="3" color="blue">CONTACT</font></b></td>
+                     <td><b><font size="3" color="blue">COLLEGE</font></b></td>  
+                    <td><b><font size="3" color="red"><center>ACTIONS</font></center></b></td>
+                      
+                </tr>  
+                <tr ng-repeat="Student in Students">  
+            			<div><font size="5" color="green">NUMBERS OF STUDENTS : {{count}}</font></div> 
+                      <td>{{ Student.sn }}  
+                     </td> 
+                    <td>{{ Student.sname }}  
+                     </td> 
+                     <td>{{ Student.susn }}  
+                     </td> 
+                     <td>{{ Student.sdate }}  
+                     </td> 
+                     <td>{{ Student.semail }}  
+                     </td> 
+                     <td>{{ Student.sno }}  
+                     </td> 
+                     <td>{{ Student.scollege }}  
+                     </td> 
+                       
+                    <td>  
+                        <button ng-click="deleteStudent(Student)">Delete</button> 
+                          <button ng-click="editStudent(Student)">Update</button> 
+      
+                    </td> 
+                    
+                </tr>  
+      
+            </table> </center>
+            </fieldset> 
+            
+             </div>  
+      
+    </body>  
+    </html>   
+                   
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
